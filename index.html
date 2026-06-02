@@ -1,1814 +1,749 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lilian Lacanna no SHRM 2026 | Crivo Hub</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lilian Lacanna na SHRM 2026 | Crivo Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
-    <!-- Firebase SDKs -->
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import {
-            getFirestore, collection, addDoc, getDocs,
-            updateDoc, doc, query, orderBy, onSnapshot,
-            increment, setDoc, getDoc
-        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCWzcdSyTjUD_PmhdYy0-tOKodIsPrG5nE",
-            authDomain: "crivoshrm.firebaseapp.com",
-            projectId: "crivoshrm",
-            storageBucket: "crivoshrm.firebasestorage.app",
-            messagingSenderId: "753199881804",
-            appId: "1:753199881804:web:35fc8543f44dcf1d6c1ee9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window._db = db;
-        window._fb = { collection, addDoc, getDocs, updateDoc, doc, query, orderBy, onSnapshot, increment, setDoc, getDoc };
-        window.dispatchEvent(new Event('firebaseReady'));
-    </script>
-
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        :root {
-            --blue: #054156;
-            --blue-dark: #032b38;
-            --blue-light: #e8f4f8;
-            --orange: #ff9800;
-            --orange-light: #fff3e0;
-            --white: #ffffff;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-400: #9ca3af;
-            --gray-600: #6b7280;
-            --gray-800: #1f2937;
-            --font-display: 'Syne', sans-serif;
-            --font-body: 'Inter', sans-serif;
-            --r: 14px;
-            --r-sm: 8px;
-        }
-
-        body {
-            background: var(--white);
-            color: var(--gray-800);
-            font-family: var(--font-body);
-            font-size: 16px;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* ═══════════════════════════════
-   SPLASH / PARTICLE INTRO
-═══════════════════════════════ */
-        #splash {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: var(--blue-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-
-        #splash.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        #particles-canvas {
-            position: absolute;
-            inset: 0;
-        }
-
-        .splash-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
-
-        .splash-logo {
-            height: 48px;
-            margin-bottom: 48px;
-            filter: brightness(0) invert(1);
-            opacity: 0;
-            animation: splashFadeIn 0.6s ease 0.3s forwards;
-        }
-
-        .splash-title {
-            font-family: var(--font-display);
-            font-size: clamp(52px, 9vw, 110px);
-            font-weight: 800;
-            color: transparent;
-            background: linear-gradient(90deg, #ffffff 0%, var(--orange) 60%, #ffcc80 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            letter-spacing: -0.5px;
-            line-height: 1;
-            opacity: 0;
-            transform: translateY(40px);
-            animation: splashTitleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-        }
-
-        .splash-sub {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-top: 16px;
-            opacity: 0;
-            animation: splashFadeIn 0.6s ease 1.1s forwards;
-        }
-
-        .splash-bar {
-            width: 240px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            margin: 32px auto 0;
-            overflow: hidden;
-            opacity: 0;
-            animation: splashFadeIn 0.4s ease 1.2s forwards;
-        }
-
-        .splash-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--orange);
-            border-radius: 100px;
-            transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes splashFadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes splashTitleIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ═══════════════════════════════
-   NAVIGATION
-═══════════════════════════════ */
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 500;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 0 clamp(20px, 5vw, 80px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-        }
-
-        .nav-logo img {
-            height: 32px;
-            display: block;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 4px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--gray-600);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 6px 14px;
-            border-radius: 100px;
-            transition: all .2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--blue);
-            background: var(--blue-light);
-        }
-
-        .nav-badge {
-            background: var(--orange);
-            color: #fff;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 100px;
-            letter-spacing: 0.04em;
-        }
-
-        /* ═══════════════════════════════
-   HERO
-═══════════════════════════════ */
-        .hero {
-            padding: 80px clamp(20px, 5vw, 80px) 80px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        .hero-text {}
-
-        .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--orange);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .hero-eyebrow span {
-            width: 6px;
-            height: 6px;
-            background: var(--orange);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1
-            }
-
-            50% {
-                transform: scale(1.6);
-                opacity: 0.5
-            }
-        }
-
-        .hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(38px, 4.5vw, 62px);
-            font-weight: 800;
-            line-height: 1.08;
-            letter-spacing: -0.5px;
-            color: var(--blue);
-        }
-
-        .hero h1 .orange {
-            color: var(--orange);
-        }
-
-        .hero-desc {
-            margin-top: 20px;
-            font-size: 17px;
-            color: var(--gray-600);
-            line-height: 1.7;
-            max-width: 440px;
-        }
-
-        .hero-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 28px;
-        }
-
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: var(--gray-100);
-            border: 1px solid var(--gray-200);
-            border-radius: 100px;
-            padding: 7px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--gray-800);
-        }
-
-        .chip-icon {
-            font-size: 15px;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 36px;
-        }
-
-        .btn-primary {
-            background: var(--blue);
-            color: #fff;
-            border: none;
-            padding: 13px 28px;
-            border-radius: 100px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all .25s;
-            text-decoration: none;
-            display: inline-block;
-            letter-spacing: 0.02em;
-        }
-
-        .btn-primary:hover {
-            background: var(--orange);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 152, 0, 0.35);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--blue);
-            border: 1.5px solid var(--blue);
-            padding: 12px 28px;
-            border-radius: 100px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all .25s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-outline:hover {
-            background: var(--blue-light);
-        }
-
-        /* ─── YouTube Embed ─── */
-        .hero-video-wrap {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 24px 80px rgba(5, 65, 86, 0.18);
-            aspect-ratio: 16/9;
-            border: 1px solid var(--gray-200);
-        }
-
-        .hero-video-wrap iframe {
-            width: 100%;
-            height: 100%;
-            display: block;
-            border: none;
-        }
-
-        .video-label {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
-            background: rgba(5, 65, 86, 0.92);
-            backdrop-filter: blur(10px);
-            color: #fff;
-            border-radius: var(--r-sm);
-            padding: 8px 14px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        /* ═══════════════════════════════
-   SECTION COMMONS
-═══════════════════════════════ */
-        section {
-            padding: 96px clamp(20px, 5vw, 80px);
-        }
-
-        .section-inner {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        .section-kicker {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--orange);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-kicker::before {
-            content: '';
-            display: block;
-            width: 20px;
-            height: 2px;
-            background: var(--orange);
-        }
-
-        h2.section-title {
-            font-family: var(--font-display);
-            font-size: clamp(28px, 3.5vw, 46px);
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: var(--blue);
-            line-height: 1.1;
-            margin-bottom: 14px;
-        }
-
-        .section-desc {
-            color: var(--gray-600);
-            font-size: 16px;
-            max-width: 560px;
-            line-height: 1.7;
-            margin-bottom: 56px;
-        }
-
-        .divider {
-            height: 1px;
-            background: var(--gray-200);
-            margin: 0 clamp(20px, 5vw, 80px);
-        }
-
-        /* ═══════════════════════════════
-   CALENDAR
-═══════════════════════════════ */
-        #calendario {
-            background: var(--gray-50);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-        }
-
-        .cal-day {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--r);
-            padding: 24px 20px;
-            cursor: pointer;
-            transition: all .3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cal-day-top-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gray-200);
-            transition: background .3s;
-        }
-
-        .cal-day:hover .cal-day-top-bar,
-        .cal-day.active .cal-day-top-bar {
-            background: var(--orange);
-        }
-
-        .cal-day:hover,
-        .cal-day.active {
-            border-color: var(--orange);
-            box-shadow: 0 12px 40px rgba(255, 152, 0, 0.12);
-            transform: translateY(-4px);
-        }
-
-        .cal-day-num {
-            font-family: var(--font-display);
-            font-size: 56px;
-            font-weight: 800;
-            color: var(--gray-200);
-            line-height: 1;
-            transition: color .3s;
-        }
-
-        .cal-day:hover .cal-day-num,
-        .cal-day.active .cal-day-num {
-            color: var(--orange);
-        }
-
-        .cal-day-label {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--gray-400);
-            margin-top: 4px;
-            margin-bottom: 16px;
-        }
-
-        .cal-session {
-            font-size: 12px;
-            line-height: 1.45;
-            padding: 8px 10px;
-            border-radius: var(--r-sm);
-            background: var(--gray-50);
-            border-left: 2px solid var(--orange);
-            margin-bottom: 8px;
-            color: var(--gray-800);
-        }
-
-        .cal-session-time {
-            display: block;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--orange);
-            letter-spacing: 0.06em;
-            margin-bottom: 2px;
-        }
-
-        .cal-day-tag {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 600;
-            background: var(--orange-light);
-            color: var(--orange);
-            border-radius: 100px;
-            padding: 2px 8px;
-            margin-bottom: 14px;
-        }
-
-        /* ═══════════════════════════════
-   GALLERY
-═══════════════════════════════ */
-        #galeria {
-            background: var(--white);
-        }
-
-        .upload-area {
-            border: 2px dashed var(--gray-200);
-            border-radius: var(--r);
-            padding: 48px 32px;
-            text-align: center;
-            cursor: pointer;
-            margin-bottom: 40px;
-            transition: all .25s;
-            background: var(--gray-50);
-        }
-
-        .upload-area:hover {
-            border-color: var(--orange);
-            background: var(--orange-light);
-        }
-
-        .upload-area input {
-            display: none;
-        }
-
-        .upload-icon {
-            font-size: 36px;
-            margin-bottom: 12px;
-        }
-
-        .upload-area strong {
-            display: block;
-            font-size: 16px;
-            color: var(--blue);
-            margin-bottom: 6px;
-        }
-
-        .upload-area p {
-            font-size: 13px;
-            color: var(--gray-600);
-        }
-
-        .upload-progress {
-            display: none;
-            margin-top: 12px;
-            height: 4px;
-            background: var(--gray-200);
-            border-radius: 100px;
-            overflow: hidden;
-        }
-
-        .upload-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--orange);
-            border-radius: 100px;
-            transition: width .3s;
-        }
-
-        .size-note {
-            font-size: 11px;
-            color: var(--gray-400);
-            margin-top: 6px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .gallery-empty {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 80px 20px;
-            color: var(--gray-400);
-            font-size: 15px;
-        }
-
-        .gallery-empty-icon {
-            font-size: 56px;
-            display: block;
-            margin-bottom: 16px;
-        }
-
-        .gallery-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--r);
-            overflow: hidden;
-            transition: transform .3s, box-shadow .3s;
-        }
-
-        .gallery-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 48px rgba(5, 65, 86, 0.1);
-        }
-
-        .gallery-img {
-            width: 100%;
-            height: 260px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .gallery-actions {
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-top: 1px solid var(--gray-100);
-        }
-
-        .act-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-family: var(--font-body);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--gray-600);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 6px 10px;
-            border-radius: var(--r-sm);
-            transition: all .2s;
-        }
-
-        .act-btn:hover {
-            background: var(--gray-100);
-            color: var(--gray-800);
-        }
-
-        .act-btn.liked {
-            color: #e53935;
-        }
-
-        .act-btn .ico {
-            font-size: 16px;
-        }
-
-        .ig-btn {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: var(--font-body);
-            font-size: 12px;
-            font-weight: 600;
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            padding: 6px 14px;
-            border-radius: 100px;
-            transition: opacity .2s;
-        }
-
-        .ig-btn:hover {
-            opacity: 0.85;
-        }
-
-        .comments-panel {
-            display: none;
-            padding: 0 18px 16px;
-            border-top: 1px solid var(--gray-100);
-        }
-
-        .comments-list {
-            max-height: 120px;
-            overflow-y: auto;
-            margin: 12px 0 8px;
-        }
-
-        .cmt-item {
-            padding: 7px 0;
-            border-bottom: 1px solid var(--gray-100);
-            font-size: 13px;
-            color: var(--gray-800);
-        }
-
-        .cmt-author {
-            font-weight: 600;
-            color: var(--blue);
-            font-size: 12px;
-        }
-
-        .cmt-form {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .cmt-input {
-            flex: 1;
-            background: var(--gray-50);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--r-sm);
-            padding: 8px 12px;
-            color: var(--gray-800);
-            font-family: var(--font-body);
-            font-size: 13px;
-            outline: none;
-        }
-
-        .cmt-input:focus {
-            border-color: var(--blue);
-        }
-
-        .cmt-send {
-            background: var(--blue);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            transition: .2s;
-            font-family: var(--font-body);
-        }
-
-        .cmt-send:hover {
-            background: var(--orange);
-        }
-
-        /* ═══════════════════════════════
-   ENQUETES
-═══════════════════════════════ */
-        #enquetes {
-            background: var(--gray-50);
-        }
-
-        .polls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 20px;
-        }
-
-        .poll-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--r);
-            padding: 28px;
-            transition: box-shadow .3s;
-        }
-
-        .poll-card:hover {
-            box-shadow: 0 8px 32px rgba(5, 65, 86, 0.08);
-        }
-
-        .poll-badge {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            background: var(--orange-light);
-            color: var(--orange);
-            border-radius: 100px;
-            padding: 3px 12px;
-            margin-bottom: 14px;
-        }
-
-        .poll-q {
-            font-family: var(--font-display);
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--blue);
-            line-height: 1.4;
-            margin-bottom: 20px;
-            letter-spacing: 0;
-        }
-
-        .poll-opts {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .poll-opt {
-            position: relative;
-            background: var(--gray-50);
-            border: 1.5px solid var(--gray-200);
-            border-radius: var(--r-sm);
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: all .2s;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: var(--font-body);
-        }
-
-        .poll-opt:hover {
-            border-color: var(--orange);
-        }
-
-        .poll-opt.voted {
-            cursor: default;
-            border-color: var(--orange);
-        }
-
-        .poll-opt.my-vote {
-            background: var(--orange-light);
-            border-color: var(--orange);
-        }
-
-        .poll-fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            background: rgba(255, 152, 0, 0.08);
-            transition: width .7s ease;
-            border-radius: var(--r-sm);
-        }
-
-        .poll-opt-text {
-            position: relative;
-            z-index: 1;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-800);
-        }
-
-        .poll-opt-pct {
-            position: relative;
-            z-index: 1;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--orange);
-        }
-
-        .poll-total {
-            margin-top: 12px;
-            font-size: 12px;
-            color: var(--gray-400);
-        }
-
-        /* ═══════════════════════════════
-   SOBRE LILIAN
-═══════════════════════════════ */
-        #sobre {
-            background: var(--white);
-        }
-
-        .sobre-grid {
-            display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .sobre-img-wrap {
-            position: relative;
-        }
-
-        .sobre-img {
-            width: 100%;
-            border-radius: 20px;
-            display: block;
-            border: 1px solid var(--gray-200);
-        }
-
-        .sobre-img-deco {
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
-            width: 72%;
-            height: 72%;
-            border: 2px solid var(--orange);
-            border-radius: 20px;
-            opacity: 0.25;
-            z-index: -1;
-        }
-
-        .sobre-quote {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--blue);
-            line-height: 1.4;
-            font-style: italic;
-            padding-left: 20px;
-            border-left: 3px solid var(--orange);
-            margin-bottom: 24px;
-        }
-
-        .sobre-text {
-            color: var(--gray-600);
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 14px;
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 32px;
-            flex-wrap: wrap;
-            margin-top: 36px;
-        }
-
-        .stat-num {
-            font-family: var(--font-display);
-            font-size: 40px;
-            font-weight: 800;
-            color: var(--orange);
-            line-height: 1;
-        }
-
-        .stat-lbl {
-            font-size: 13px;
-            color: var(--gray-600);
-            margin-top: 4px;
-        }
-
-        /* ═══════════════════════════════
-   FOOTER
-═══════════════════════════════ */
-        footer {
-            background: var(--blue);
-            color: rgba(255, 255, 255, 0.7);
-            padding: 60px clamp(20px, 5vw, 80px);
-            text-align: center;
-        }
-
-        footer img {
-            height: 36px;
-            margin-bottom: 20px;
-            filter: brightness(0) invert(1);
-        }
-
-        footer p {
-            font-size: 14px;
-            margin-bottom: 6px;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-top: 20px;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.5);
-            text-decoration: none;
-            font-size: 13px;
-            transition: color .2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--orange);
-        }
-
-        /* ═══════════════════════════════
-   TOAST
-═══════════════════════════════ */
-        .toast {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 9998;
-            background: var(--blue);
-            color: #fff;
-            border-left: 3px solid var(--orange);
-            border-radius: var(--r);
-            padding: 14px 22px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(16px);
-            transition: all .3s;
-            pointer-events: none;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ═══════════════════════════════
-   FIREBASE WARNING
-═══════════════════════════════ */
-        .fb-warn {
-            display: none;
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: var(--r);
-            padding: 18px 24px;
-            margin-bottom: 32px;
-            font-size: 14px;
-            color: #7c5800;
-        }
-
-        .fb-warn strong {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        /* ═══════════════════════════════
-   ANIMATIONS — scroll reveal
-═══════════════════════════════ */
-        .reveal {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.55s ease, transform 0.55s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ═══════════════════════════════
-   RESPONSIVE
-═══════════════════════════════ */
-        @media (max-width: 960px) {
-            .hero {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-video-wrap {
-                order: -1;
-            }
-
-            .calendar-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .calendar-grid .cal-day:last-child {
-                grid-column: 1/-1;
-            }
-
-            .sobre-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-        }
-
-        @media (max-width: 580px) {
-            .calendar-grid {
-                grid-template-columns: 1fr;
-            }
-
-            nav .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-        }
-    </style>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, getDocs,
+    updateDoc, doc, query, orderBy, onSnapshot,
+    increment, setDoc, getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCWzcdSyTjUD_PmhdYy0-tOKodIsPrG5nE",
+    authDomain: "crivoshrm.firebaseapp.com",
+    projectId: "crivoshrm",
+    storageBucket: "crivoshrm.firebasestorage.app",
+    messagingSenderId: "753199881804",
+    appId: "1:753199881804:web:35fc8543f44dcf1d6c1ee9"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window._db = db;
+  window._fb = { collection, addDoc, getDocs, updateDoc, doc, query, orderBy, onSnapshot, increment, setDoc, getDoc };
+  window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --blue:#054156;--blue-dark:#032b38;--blue-mid:#0a5a75;--blue-light:#e8f4f8;
+  --orange:#ff9800;--orange-light:#fff3e0;--orange-mid:#ffb74d;
+  --white:#ffffff;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#6b7280;--gray-800:#1f2937;
+  --font-display: 'Syne', sans-serif;--font-b:'Inter',sans-serif;
+  --r:14px;--rsm:8px;
+}
+body{background:var(--white);color:var(--gray-800);font-family:var(--font-b);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* ── SPLASH ── */
+#splash{position:fixed;inset:0;z-index:9999;background:var(--blue-dark);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .8s ease,visibility .8s ease}
+#splash.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#pcanvas{position:absolute;inset:0}
+.sc{position:relative;z-index:2;text-align:center;padding:0 24px}
+.slogo{height:44px;margin-bottom:44px;filter:brightness(0) invert(1);opacity:0;animation:sfi .6s ease .3s forwards}
+.stitle{font-family:var(--font-d);font-size:clamp(48px,9vw,108px);font-weight:800;color:transparent;background:linear-gradient(90deg,#fff 0%,var(--orange) 55%,#ffcc80 100%);-webkit-background-clip:text;background-clip:text;letter-spacing:0;line-height:1.1;opacity:0;transform:translateY(40px);animation:sti .8s cubic-bezier(.16,1,.3,1) .6s forwards}
+.ssub{color:rgba(255,255,255,.5);font-size:13px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;margin-top:14px;opacity:0;animation:sfi .6s ease 1.1s forwards}
+.sbar{width:200px;height:2px;background:rgba(255,255,255,.1);border-radius:100px;margin:28px auto 0;overflow:hidden;opacity:0;animation:sfi .4s ease 1.2s forwards}
+.sbar-f{height:100%;width:0%;background:var(--orange);border-radius:100px;transition:width 1.8s cubic-bezier(.4,0,.2,1)}
+@keyframes sfi{to{opacity:1}}
+@keyframes sti{to{opacity:1;transform:translateY(0)}}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-200);padding:0 clamp(20px,5vw,80px);display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo img{height:30px;display:block}
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{color:var(--gray-600);text-decoration:none;font-size:12px;font-weight:500;padding:6px 12px;border-radius:100px;transition:all .2s}
+.nav-links a:hover{color:var(--blue);background:var(--blue-light)}
+.nav-wa{display:flex;align-items:center;gap:7px;background:#25d366;color:#fff;font-size:12px;font-weight:600;padding:7px 16px;border-radius:100px;text-decoration:none;transition:opacity .2s}
+.nav-wa:hover{opacity:.85}
+@media(max-width:700px){.nav-links{display:none}}
+
+/* ── HERO ── */
+.hero-wrap{max-width:1300px;margin:0 auto;padding:80px clamp(20px,5vw,80px)}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--orange);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px}
+.hero-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.7);opacity:.4}}
+.hero h1{font-family:var(--font-d);font-size:clamp(36px,4.2vw,60px);font-weight:800;line-height:1.1;letter-spacing:-.5px;color:var(--blue)}
+.hero h1 .hl{color:var(--orange)}
+.hero-lead{margin-top:18px;font-size:16px;color:var(--gray-600);line-height:1.75;max-width:460px}
+.hero-comp{margin-top:16px;font-size:15px;color:var(--gray-600);line-height:1.75;max-width:460px}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:500;color:var(--gray-800)}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px}
+.btn-p{background:var(--blue);color:#fff;border:none;padding:13px 26px;border-radius:100px;font-family:var(--font-b);font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block}
+.btn-p:hover{background:var(--orange);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,152,0,.35)}
+.btn-o{background:transparent;color:var(--blue);border:1.5px solid var(--blue);padding:12px 26px;border-radius:100px;font-family:var(--font-b);font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block}
+.btn-o:hover{background:var(--blue-light)}
+.btn-wa{background:#25d366;color:#fff;border:none;padding:13px 26px;border-radius:100px;font-family:var(--font-b);font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-wa:hover{background:#1ebe5d;transform:translateY(-2px)}
+.hero-video-wrap{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 24px 80px rgba(5,65,86,.18);aspect-ratio:16/9;border:1px solid var(--gray-200)}
+.hero-video-wrap iframe{width:100%;height:100%;display:block;border:none}
+.video-label{position:absolute;bottom:14px;left:14px;background:rgba(5,65,86,.92);backdrop-filter:blur(8px);color:#fff;border-radius:var(--rsm);padding:7px 12px;font-size:11px;font-weight:500}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.hero-video-wrap{order:-1}}
+
+/* ── SECTION ── */
+section{padding:96px clamp(20px,5vw,80px)}
+.si{max-width:1300px;margin:0 auto}
+.sk{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.sk::before{content:'';display:block;width:20px;height:2px;background:var(--orange)}
+h2.st{font-family:var(--font-d);font-size:clamp(26px,3.2vw,44px);font-weight:800;letter-spacing:-.5px;color:var(--blue);line-height:1.15;margin-bottom:14px}
+.sd{color:var(--gray-600);font-size:16px;max-width:580px;line-height:1.75;margin-bottom:52px}
+.divider{height:1px;background:var(--gray-200);margin:0 clamp(20px,5vw,80px)}
+
+/* ── POR QUE ESTOU AQUI ── */
+#porque{background:var(--blue-dark)}
+#porque .sk::before{background:var(--orange)}
+#porque .sk{color:var(--orange)}
+#porque h2.st{color:#fff}
+#porque .sd{color:rgba(255,255,255,.65);max-width:640px}
+#porque .sd-b{color:rgba(255,255,255,.65);font-size:16px;line-height:1.75;max-width:640px;margin-bottom:52px}
+.porque-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.pcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:28px 24px;transition:all .3s;position:relative;overflow:hidden}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.pcard:hover::before{transform:scaleX(1)}
+.pcard:hover{border-color:rgba(255,152,0,.3);background:rgba(255,152,0,.06);transform:translateY(-4px)}
+.pcard-icon{font-size:28px;margin-bottom:14px}
+.pcard-title{font-family:var(--font-d);font-size:17px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.3}
+.pcard-text{font-size:14px;color:rgba(255,255,255,.6);line-height:1.65}
+
+/* ── CALENDARIO ── */
+#calendario{background:var(--gray-50)}
+.cal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.cday{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);padding:22px 18px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.cday-bar{position:absolute;top:0;left:0;right:0;height:3px;background:var(--gray-200);transition:background .3s}
+.cday:hover .cday-bar,.cday.active .cday-bar{background:var(--orange)}
+.cday:hover,.cday.active{border-color:var(--orange);box-shadow:0 12px 40px rgba(255,152,0,.12);transform:translateY(-4px)}
+.cday-num{font-family:var(--font-d);font-size:52px;font-weight:800;color:var(--gray-200);line-height:1;transition:color .3s}
+.cday:hover .cday-num,.cday.active .cday-num{color:var(--orange)}
+.cday-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);margin-top:4px;margin-bottom:14px}
+.cday-tag{display:inline-block;font-size:10px;font-weight:600;background:var(--orange-light);color:var(--orange);border-radius:100px;padding:2px 8px;margin-bottom:12px}
+.csession{font-size:11px;line-height:1.45;padding:7px 10px;border-radius:var(--rsm);background:var(--gray-50);border-left:2px solid var(--orange);margin-bottom:7px;color:var(--gray-800)}
+.ctime{display:block;font-size:9px;font-weight:700;color:var(--orange);letter-spacing:.06em;margin-bottom:2px}
+@media(max-width:900px){.cal-grid{grid-template-columns:repeat(2,1fr)}.cal-grid .cday:last-child{grid-column:1/-1}}
+@media(max-width:560px){.cal-grid{grid-template-columns:1fr}}
+
+/* ── GALERIA ── */
+#galeria{background:var(--white)}
+.upload-area{border:2px dashed var(--gray-200);border-radius:var(--r);padding:44px 32px;text-align:center;cursor:pointer;margin-bottom:40px;transition:all .25s;background:var(--gray-50)}
+.upload-area:hover{border-color:var(--orange);background:var(--orange-light)}
+.upload-area input{display:none}
+.upload-icon{font-size:34px;margin-bottom:10px}
+.upload-area strong{display:block;font-size:15px;color:var(--blue);margin-bottom:6px}
+.upload-area p{font-size:13px;color:var(--gray-600)}
+.upload-prog{display:none;margin-top:12px;height:4px;background:var(--gray-200);border-radius:100px;overflow:hidden}
+.upload-fill{height:100%;width:0%;background:var(--orange);border-radius:100px;transition:width .3s}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px}
+.gal-empty{grid-column:1/-1;text-align:center;padding:80px 20px}
+.gal-empty-icon{font-size:52px;display:block;margin-bottom:16px}
+.gal-empty-title{font-family:var(--font-d);font-size:20px;font-weight:700;color:var(--blue);margin-bottom:10px}
+.gal-empty-text{color:var(--gray-600);font-size:15px;line-height:1.7}
+.gcard{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);overflow:hidden;transition:transform .3s,box-shadow .3s}
+.gcard:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(5,65,86,.1)}
+.gimg{width:100%;height:250px;object-fit:cover;display:block}
+.gactions{padding:12px 16px;display:flex;align-items:center;gap:6px;border-top:1px solid var(--gray-100)}
+.abt{display:flex;align-items:center;gap:5px;font-family:var(--font-b);font-size:13px;font-weight:500;color:var(--gray-600);background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:var(--rsm);transition:all .2s}
+.abt:hover{background:var(--gray-100);color:var(--gray-800)}
+.abt.liked{color:#e53935}
+.abt .ico{font-size:15px}
+.ig-btn{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:var(--font-b);font-size:12px;font-weight:600;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;border:none;cursor:pointer;padding:6px 13px;border-radius:100px;transition:opacity .2s}
+.ig-btn:hover{opacity:.85}
+.cpanel{display:none;padding:0 16px 14px;border-top:1px solid var(--gray-100)}
+.clist{max-height:110px;overflow-y:auto;margin:10px 0 8px}
+.citem{padding:6px 0;border-bottom:1px solid var(--gray-100);font-size:13px;color:var(--gray-800)}
+.cauthor{font-weight:600;color:var(--blue);font-size:12px}
+.cform{display:flex;gap:8px;margin-top:8px}
+.cinput{flex:1;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--rsm);padding:8px 12px;color:var(--gray-800);font-family:var(--font-b);font-size:13px;outline:none}
+.cinput:focus{border-color:var(--blue)}
+.csend{background:var(--blue);color:#fff;border:none;padding:8px 14px;border-radius:var(--rsm);cursor:pointer;font-weight:600;font-size:13px;transition:.2s;font-family:var(--font-b)}
+.csend:hover{background:var(--orange)}
+
+/* ── ENQUETES ── */
+#enquetes{background:var(--gray-50)}
+.poll-intro{font-size:15px;color:var(--gray-600);font-style:italic;margin-bottom:36px;padding-left:20px;border-left:3px solid var(--orange);line-height:1.7}
+.polls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.pcard2{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r);padding:26px;transition:box-shadow .3s}
+.pcard2:hover{box-shadow:0 8px 32px rgba(5,65,86,.08)}
+.pbadge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--orange-light);color:var(--orange);border-radius:100px;padding:3px 12px;margin-bottom:12px}
+.pq{font-family:var(--font-d);font-size:16px;font-weight:700;color:var(--blue);line-height:1.4;margin-bottom:18px;letter-spacing:0}
+.popts{display:flex;flex-direction:column;gap:9px}
+.popt{position:relative;background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--rsm);padding:11px 14px;cursor:pointer;transition:all .2s;overflow:hidden;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-b)}
+.popt:hover{border-color:var(--orange)}
+.popt.voted{cursor:default;border-color:var(--orange)}
+.popt.myvote{background:var(--orange-light);border-color:var(--orange)}
+.pfill{position:absolute;left:0;top:0;bottom:0;background:rgba(255,152,0,.08);transition:width .7s ease;border-radius:var(--rsm)}
+.popt-t{position:relative;z-index:1;font-size:14px;font-weight:500;color:var(--gray-800)}
+.popt-p{position:relative;z-index:1;font-size:13px;font-weight:700;color:var(--orange)}
+.ptotal{margin-top:10px;font-size:12px;color:var(--gray-400)}
+
+/* ── SOBRE LILIAN ── */
+#sobre{background:var(--white)}
+.sobre-grid{display:grid;grid-template-columns:340px 1fr;gap:80px;align-items:start}
+.sobre-img-wrap{position:relative}
+.sobre-img{width:100%;border-radius:20px;display:block;border:1px solid var(--gray-200)}
+.sobre-deco{position:absolute;bottom:-18px;right:-18px;width:70%;height:70%;border:2px solid var(--orange);border-radius:20px;opacity:.2;z-index:-1}
+.sobre-quote{font-family:var(--font-d);font-size:19px;font-weight:700;color:var(--blue);line-height:1.45;font-style:italic;padding-left:20px;border-left:3px solid var(--orange);margin:28px 0 24px}
+.sobre-text{color:var(--gray-600);font-size:16px;line-height:1.8;margin-bottom:14px}
+.stats-row{display:flex;gap:28px;flex-wrap:wrap;margin-top:32px;padding-top:32px;border-top:1px solid var(--gray-200)}
+.stat-num{font-family:var(--font-d);font-size:38px;font-weight:800;color:var(--orange);line-height:1}
+.stat-lbl{font-size:13px;color:var(--gray-600);margin-top:4px}
+@media(max-width:900px){.sobre-grid{grid-template-columns:1fr;gap:40px}}
+
+/* ── CAPTAÇÃO ── */
+#captacao{background:var(--blue-dark);position:relative;overflow:hidden}
+#captacao::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(255,152,0,.08) 0%,transparent 70%);pointer-events:none}
+#captacao .sk{color:var(--orange)}
+#captacao .sk::before{background:var(--orange)}
+#captacao h2.st{color:#fff}
+#captacao .sd{color:rgba(255,255,255,.65);max-width:520px;margin-bottom:0}
+.cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:0}
+.cap-benefits{list-style:none;margin:32px 0;display:flex;flex-direction:column;gap:12px}
+.cap-benefits li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:rgba(255,255,255,.8);line-height:1.5}
+.cap-benefits li::before{content:'✓';color:var(--orange);font-weight:700;font-size:16px;flex-shrink:0;margin-top:1px}
+.cap-form-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:36px;backdrop-filter:blur(8px)}
+.cap-form-title{font-family:var(--font-d);font-size:20px;font-weight:700;color:#fff;margin-bottom:8px}
+.cap-form-sub{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.6}
+.cap-field{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--rsm);padding:13px 16px;color:#fff;font-family:var(--font-b);font-size:14px;outline:none;margin-bottom:12px;transition:border .2s}
+.cap-field::placeholder{color:rgba(255,255,255,.4)}
+.cap-field:focus{border-color:var(--orange)}
+.btn-cap{width:100%;background:var(--orange);color:#1a0800;border:none;padding:14px;border-radius:100px;font-family:var(--font-b);font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;margin-top:4px}
+.btn-cap:hover{background:var(--orange-mid);transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,152,0,.4)}
+.cap-privacy{font-size:12px;color:rgba(255,255,255,.35);text-align:center;margin-top:14px}
+@media(max-width:860px){.cap-grid{grid-template-columns:1fr}}
+
+/* ── FOOTER ── */
+footer{background:var(--blue);padding:60px clamp(20px,5vw,80px);text-align:center}
+footer img{height:34px;margin-bottom:18px;filter:brightness(0) invert(1);display:block;margin-left:auto;margin-right:auto}
+.footer-main{font-family:var(--font-d);font-size:17px;font-weight:700;color:#fff;margin-bottom:10px}
+.footer-sub{color:rgba(255,255,255,.55);font-size:14px;line-height:1.7;max-width:440px;margin:0 auto 24px}
+.footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.footer-links a{color:rgba(255,255,255,.45);text-decoration:none;font-size:13px;transition:color .2s}
+.footer-links a:hover{color:var(--orange)}
+.footer-copy{margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(255,255,255,.3)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:26px;right:26px;z-index:9998;background:var(--blue);color:#fff;border-left:3px solid var(--orange);border-radius:var(--r);padding:13px 20px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.2);opacity:0;transform:translateY(14px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+.fb-warn{display:none;background:#fff8e1;border:1px solid #ffe082;border-radius:var(--r);padding:16px 22px;margin-bottom:28px;font-size:14px;color:#7c5800}
+.fb-warn strong{display:block;margin-bottom:4px}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
 </head>
-
 <body>
 
-    <!-- ══════════════════════════════
-     SPLASH SCREEN
-══════════════════════════════ -->
-    <div id="splash">
-        <canvas id="particles-canvas"></canvas>
-        <div class="splash-content">
-            <img class="splash-logo" src="https://crivohub.com.br/wp-content/uploads/2026/06/Design-sem-nome.png"
-                alt="Crivo Hub">
-            <div class="splash-title">SHRM 2026</div>
-            <div class="splash-sub">Orlando · Florida · Junho 2026</div>
-            <div class="splash-bar">
-                <div class="splash-bar-fill" id="splashBar"></div>
-            </div>
-        </div>
-    </div>
+<!-- SPLASH -->
+<div id="splash">
+  <canvas id="pcanvas"></canvas>
+  <div class="sc">
+    <img class="slogo" src="https://crivohub.com.br/wp-content/uploads/2026/06/Design-sem-nome.png" alt="Crivo Hub">
+    <div class="stitle">SHRM 2026</div>
+    <div class="ssub">Orlando · Florida · Junho 2026</div>
+    <div class="sbar"><div class="sbar-f" id="sbarFill"></div></div>
+  </div>
+</div>
 
-    <!-- ══════════════════════════════
-     NAV
-══════════════════════════════ -->
-    <nav>
-        <div class="nav-logo"><img src="https://crivohub.com.br/wp-content/uploads/2026/06/Design-sem-nome.png"
-                alt="Crivo Hub"></div>
-        <ul class="nav-links">
-            <li><a href="#calendario">Agenda</a></li>
-            <li><a href="#galeria">Galeria</a></li>
-            <li><a href="#enquetes">Enquetes</a></li>
-            <li><a href="#sobre">Sobre Lilian</a></li>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><img src="https://crivohub.com.br/wp-content/uploads/2026/06/Design-sem-nome.png" alt="Crivo Hub"></div>
+  <ul class="nav-links">
+    <li><a href="#porque">Por que estou aqui</a></li>
+    <li><a href="#calendario">Agenda</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#enquetes">Enquetes</a></li>
+    <li><a href="#sobre">Lilian</a></li>
+  </ul>
+  <a class="nav-wa" href="https://chat.whatsapp.com/LiySEIKDZbt9wyioyg8TXa?s=cl&p=i&mlu=1" target="_blank">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.093.539 4.061 1.485 5.779L0 24l6.438-1.467A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.484-5.19-1.333l-.371-.221-3.823.872.908-3.71-.242-.384A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+    Grupo SHRM
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow"><span class="hero-dot"></span>Ao vivo de Orlando, FL</div>
+      <h1>
+        Bem-vindo à mesa<br>da <span class="hl">SHRM 2026</span>
+      </h1>
+      <p class="hero-lead">Enquanto milhares de profissionais acompanham o maior evento de gestão de pessoas do mundo, meu compromisso é filtrar, traduzir e compartilhar aquilo que realmente merece um lugar nas nossas conversas sobre liderança, aprendizagem e futuro do trabalho.</p>
+      <p class="hero-comp">Durante os próximos dias estarei em Orlando acompanhando palestras, tendências, pesquisas e cases globais. Aqui você encontrará insights, reflexões, bastidores e provocações conectadas à realidade das organizações brasileiras.</p>
+      <div class="hero-chips">
+        <div class="chip">📍 Orlando, Florida</div>
+        <div class="chip">📅 15–19 de Junho, 2026</div>
+        <div class="chip">👥 +25.000 participantes</div>
+      </div>
+      <div class="hero-cta">
+        <a href="#galeria" class="btn-p">Acompanhar a jornada</a>
+        <a href="#enquetes" class="btn-o">Participar das enquetes</a>
+        <a href="https://chat.whatsapp.com/LiySEIKDZbt9wyioyg8TXa?s=cl&p=i&mlu=1" target="_blank" class="btn-wa">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.093.539 4.061 1.485 5.779L0 24l6.438-1.467A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.484-5.19-1.333l-.371-.221-3.823.872.908-3.71-.242-.384A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Entrar no grupo
+        </a>
+      </div>
+    </div>
+    <div class="hero-video-wrap">
+      <iframe src="https://www.youtube.com/embed/ESDzRu27obc?rel=0&modestbranding=1" title="SHRM 2026" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="video-label">🎬 SHRM Annual Conference 2026</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- POR QUE ESTOU AQUI -->
+<section id="porque">
+  <div class="si">
+    <div class="sk">Por que estou aqui</div>
+    <h2 class="st">O que vou buscar na SHRM 2026</h2>
+    <p class="sd-b">Mais do que acompanhar tendências, quero entender o que realmente está transformando a forma como desenvolvemos pessoas, lideramos equipes e construímos organizações preparadas para o futuro.<br><br>Durante o evento, estarei investigando temas que impactam diretamente os desafios que vivemos nas empresas brasileiras.</p>
+    <div class="porque-cards">
+      <div class="pcard reveal">
+        <div class="pcard-icon">🤖</div>
+        <div class="pcard-title">Inteligência Artificial e Aprendizagem</div>
+        <div class="pcard-text">Como a tecnologia está ampliando a experiência humana sem substituir a conexão entre as pessoas.</div>
+      </div>
+      <div class="pcard reveal">
+        <div class="pcard-icon">🧭</div>
+        <div class="pcard-title">Liderança para um mundo em transformação</div>
+        <div class="pcard-text">As competências que diferenciam líderes em ambientes cada vez mais complexos.</div>
+      </div>
+      <div class="pcard reveal">
+        <div class="pcard-icon">🌱</div>
+        <div class="pcard-title">Cultura e Engajamento</div>
+        <div class="pcard-text">Como criar ambientes onde pessoas queiram permanecer, crescer e contribuir.</div>
+      </div>
+      <div class="pcard reveal">
+        <div class="pcard-icon">🎯</div>
+        <div class="pcard-title">Desenvolvimento de Talentos</div>
+        <div class="pcard-text">As práticas que estão formando profissionais preparados para os desafios do futuro.</div>
+      </div>
+      <div class="pcard reveal">
+        <div class="pcard-icon">🔭</div>
+        <div class="pcard-title">Futuro do Trabalho</div>
+        <div class="pcard-text">O que já está mudando e o que ainda está por vir nas organizações globais.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider" style="background:rgba(255,255,255,.08);margin:0"></div>
+
+<!-- CALENDARIO -->
+<section id="calendario">
+  <div class="si">
+    <div class="sk">Agenda do Evento</div>
+    <h2 class="st">Minha rota de aprendizagem na SHRM</h2>
+    <p class="sd">Estas são algumas das sessões, palestras e experiências que selecionei para compor minha jornada durante o evento. Cada escolha foi feita pensando no que pode gerar mais valor para líderes, RHs e organizações brasileiras.</p>
+    <div class="cal-grid">
+      <div class="cday reveal" onclick="selDay(this)">
+        <div class="cday-bar"></div>
+        <div class="cday-tag">Chegada</div>
+        <div class="cday-num">15</div>
+        <div class="cday-lbl">Dom · Jun</div>
+        <div class="csession"><span class="ctime">CHEGADA</span>Check-in Orlando · Credenciamento SHRM26</div>
+        <div class="csession"><span class="ctime">NOITE</span>Welcome Networking Reception</div>
+      </div>
+      <div class="cday reveal active" onclick="selDay(this)">
+        <div class="cday-bar"></div>
+        <div class="cday-tag">Dia 1</div>
+        <div class="cday-num">16</div>
+        <div class="cday-lbl">Seg · Jun</div>
+        <div class="csession"><span class="ctime">08:00</span>Abertura Oficial SHRM26</div>
+        <div class="csession"><span class="ctime">09:00</span>Keynote: Oprah Winfrey — Liderança com Propósito</div>
+        <div class="csession"><span class="ctime">14:00</span>O Futuro do Trabalho com IA</div>
+        <div class="csession"><span class="ctime">17:00</span>Expo: Inovações em RH</div>
+      </div>
+      <div class="cday reveal" onclick="selDay(this)">
+        <div class="cday-bar"></div>
+        <div class="cday-tag">Dia 2</div>
+        <div class="cday-num">17</div>
+        <div class="cday-lbl">Ter · Jun</div>
+        <div class="csession"><span class="ctime">09:00</span>Keynote: Simon Sinek — Cultura de Propósito</div>
+        <div class="csession"><span class="ctime">11:00</span>Workshop: Psychological Safety</div>
+        <div class="csession"><span class="ctime">14:30</span>Talent Management 2026</div>
+        <div class="csession"><span class="ctime">19:00</span>SHRM26 After Hours</div>
+      </div>
+      <div class="cday reveal" onclick="selDay(this)">
+        <div class="cday-bar"></div>
+        <div class="cday-tag">Dia 3</div>
+        <div class="cday-num">18</div>
+        <div class="cday-lbl">Qua · Jun</div>
+        <div class="csession"><span class="ctime">09:00</span>Keynote: John Maxwell — Liderança de Alto Impacto</div>
+        <div class="csession"><span class="ctime">11:30</span>Diversidade & Performance</div>
+        <div class="csession"><span class="ctime">15:00</span>Roundtable: RH Brasil vs Mundo</div>
+        <div class="csession"><span class="ctime">18:30</span>Networking Dinner</div>
+      </div>
+      <div class="cday reveal" onclick="selDay(this)">
+        <div class="cday-bar"></div>
+        <div class="cday-tag">Encerramento</div>
+        <div class="cday-num">19</div>
+        <div class="cday-lbl">Qui · Jun</div>
+        <div class="csession"><span class="ctime">09:00</span>Keynote: Christina Aguilera — Autenticidade</div>
+        <div class="csession"><span class="ctime">11:00</span>Futuro do RH: Encerramento</div>
+        <div class="csession"><span class="ctime">14:00</span>Cerimônia de Encerramento SHRM26</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- GALERIA -->
+<section id="galeria">
+  <div class="si">
+    <div class="sk">Bastidores do Evento</div>
+    <h2 class="st">Direto dos bastidores</h2>
+    <p class="sd">Momentos, encontros, descobertas e experiências compartilhadas ao longo da SHRM 2026. Porque a aprendizagem acontece tanto nos palcos quanto nas conversas de corredor.</p>
+    <div class="fb-warn" id="fbWarn">
+      <strong>⚠️ Regras do Firebase precisam ser atualizadas para ativar a galeria.</strong>
+      Firebase Console → Firestore → Regras → substitua por <code>allow read, write: if true;</code>
+    </div>
+    <div class="upload-area" id="uploadArea" onclick="document.getElementById('photoInput').click()">
+      <input type="file" id="photoInput" multiple accept="image/*" onchange="handleUpload(this.files)">
+      <div class="upload-icon">📸</div>
+      <strong>Adicionar fotos do evento</strong>
+      <p>Clique para selecionar · Tamanho máximo: 700 KB por foto</p>
+      <div class="upload-prog" id="upProg"><div class="upload-fill" id="upFill"></div></div>
+    </div>
+    <div class="gal-grid" id="galGrid">
+      <div class="gal-empty" id="galEmpty">
+        <span class="gal-empty-icon">📷</span>
+        <div class="gal-empty-title">As primeiras imagens chegam em breve</div>
+        <div class="gal-empty-text">As primeiras imagens serão publicadas assim que a jornada começar.<br>Volte em breve para acompanhar os bastidores da SHRM 2026.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ENQUETES -->
+<section id="enquetes">
+  <div class="si">
+    <div class="sk">Interaja com a Comunidade</div>
+    <h2 class="st">O que você quer que eu investigue por você?</h2>
+    <p class="sd">Sua participação ajuda a direcionar minha atenção para os temas mais relevantes para quem vive os desafios da liderança e da gestão de pessoas.</p>
+    <p class="poll-intro">Ao longo do evento vou compartilhar reflexões e aprendizados sobre os assuntos mais votados pela comunidade.</p>
+    <div class="polls-grid" id="pollsGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--gray-400)">Carregando enquetes…</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOBRE LILIAN -->
+<section id="sobre">
+  <div class="si">
+    <div class="sobre-grid">
+      <div class="sobre-img-wrap reveal">
+        <img class="sobre-img" src="https://crivohub.com.br/wp-content/uploads/2025/10/6-Mistakes-in-Business-45.png" alt="Lilian Lacanna">
+        <div class="sobre-deco"></div>
+      </div>
+      <div class="reveal">
+        <div class="sk">Quem está conduzindo essa jornada</div>
+        <h2 class="st">Lilian Lacanna</h2>
+        <p class="sobre-text">Sou Lilian Lacanna, fundadora da CRIVO. Há mais de 15 anos atuo conectando empresas, especialistas e experiências de aprendizagem que geram transformação real.</p>
+        <p class="sobre-text">Minha trajetória começou na educação e se expandiu para o universo corporativo. Talvez por isso eu acredite tanto no poder dos encontros, das conversas e da troca de perspectivas.</p>
+        <p class="sobre-text">Durante a SHRM 2026, assumo o papel de anfitriã desta jornada, compartilhando não apenas tendências, mas reflexões sobre como podemos construir organizações mais humanas, preparadas e conscientes para o futuro.</p>
+        <div class="sobre-quote">"Aprender não é acumular conhecimento. É ampliar a forma como enxergamos pessoas, negócios e possibilidades."</div>
+        <div class="stats-row">
+          <div class="stat"><div class="stat-num">15+</div><div class="stat-lbl">Anos de Experiência</div></div>
+          <div class="stat"><div class="stat-num">500+</div><div class="stat-lbl">Projetos Entregues</div></div>
+          <div class="stat"><div class="stat-num">50+</div><div class="stat-lbl">Especialistas na Rede</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CAPTAÇÃO -->
+<section id="captacao">
+  <div class="si">
+    <div class="cap-grid">
+      <div>
+        <div class="sk">Reserve seu lugar</div>
+        <h2 class="st">Reserve seu lugar à mesa</h2>
+        <p class="sd">Receba os principais insights da SHRM 2026, reflexões exclusivas e o convite para um encontro especial de compartilhamento após o evento.</p>
+        <ul class="cap-benefits">
+          <li>Resumos das principais palestras</li>
+          <li>Tendências traduzidas para a realidade brasileira</li>
+          <li>Bastidores e aprendizados em tempo real</li>
+          <li>Convite para o encontro pós-evento</li>
         </ul>
-        <div class="nav-badge">#SHRM26</div>
-    </nav>
-
-    <!-- ══════════════════════════════
-     HERO
-══════════════════════════════ -->
-    <div style="max-width:1300px;margin:0 auto;padding:80px clamp(20px,5vw,80px);">
-        <div class="hero" style="padding:0;max-width:none;margin:0;">
-            <div class="hero-text">
-                <div class="hero-eyebrow"><span></span>Ao vivo de Orlando, FL</div>
-                <h1>
-                    <span style="color:var(--blue)">Crivo</span><br>
-                    no <span class="orange">SHRM 2026</span>
-                </h1>
-                <p class="hero-desc">
-                    A CEO da Crivo Hub representa o Brasil no maior evento de RH do mundo.
-                    Acompanhe cada palestra, conexão e insight desta jornada transformadora.
-                </p>
-                <div class="hero-chips">
-                    <div class="chip"><span class="chip-icon">📍</span> Orlando, Florida</div>
-                    <div class="chip"><span class="chip-icon">📅</span> 15–19 de Junho, 2026</div>
-                    <div class="chip"><span class="chip-icon">👥</span> +25.000 participantes</div>
-                </div>
-                <div class="hero-cta">
-                    <a href="#galeria" class="btn-primary">Ver Galeria do Evento</a>
-                    <a href="#enquetes" class="btn-outline">Participar das Enquetes</a>
-                </div>
-            </div>
-
-            <div class="hero-video-wrap">
-                <iframe src="https://www.youtube.com/embed/ESDzRu27obc?rel=0&modestbranding=1&autoplay=0"
-                    title="SHRM 2026"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-                <div class="video-label">🎬 SHRM Annual Conference 2026</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- ══════════════════════════════
-     CALENDÁRIO
-══════════════════════════════ -->
-    <section id="calendario">
-        <div class="section-inner">
-            <div class="section-kicker">Agenda do Evento</div>
-            <h2 class="section-title">Calendário SHRM 2026</h2>
-            <p class="section-desc">Acompanhe os dias de evento e as principais sessões que a Lilian vai participar em
-                Orlando.</p>
-
-            <div class="calendar-grid">
-
-                <div class="cal-day reveal" onclick="selectDay(this)">
-                    <div class="cal-day-top-bar"></div>
-                    <div class="cal-day-tag">Pré-evento</div>
-                    <div class="cal-day-num">15</div>
-                    <div class="cal-day-label">Dom · Jun</div>
-                    <div class="cal-session"><span class="cal-session-time">CHEGADA</span>Check-in Orlando ·
-                        Credenciamento SHRM26</div>
-                    <div class="cal-session"><span class="cal-session-time">NOITE</span>Welcome Networking Reception
-                    </div>
-                </div>
-
-                <div class="cal-day reveal active" onclick="selectDay(this)">
-                    <div class="cal-day-top-bar"></div>
-                    <div class="cal-day-tag">Dia 1</div>
-                    <div class="cal-day-num">16</div>
-                    <div class="cal-day-label">Seg · Jun</div>
-                    <div class="cal-session"><span class="cal-session-time">08:00</span>Abertura Oficial SHRM26</div>
-                    <div class="cal-session"><span class="cal-session-time">09:00</span>Keynote: Oprah Winfrey —
-                        Liderança com Propósito</div>
-                    <div class="cal-session"><span class="cal-session-time">14:00</span>Sessão: O Futuro do Trabalho com
-                        IA</div>
-                    <div class="cal-session"><span class="cal-session-time">17:00</span>Expo: Inovações em RH</div>
-                </div>
-
-                <div class="cal-day reveal" onclick="selectDay(this)">
-                    <div class="cal-day-top-bar"></div>
-                    <div class="cal-day-tag">Dia 2</div>
-                    <div class="cal-day-num">17</div>
-                    <div class="cal-day-label">Ter · Jun</div>
-                    <div class="cal-session"><span class="cal-session-time">09:00</span>Keynote: Simon Sinek — Cultura
-                        de Propósito</div>
-                    <div class="cal-session"><span class="cal-session-time">11:00</span>Workshop: Psychological Safety
-                    </div>
-                    <div class="cal-session"><span class="cal-session-time">14:30</span>Talent Management 2026</div>
-                    <div class="cal-session"><span class="cal-session-time">19:00</span>SHRM26 After Hours</div>
-                </div>
-
-                <div class="cal-day reveal" onclick="selectDay(this)">
-                    <div class="cal-day-top-bar"></div>
-                    <div class="cal-day-tag">Dia 3</div>
-                    <div class="cal-day-num">18</div>
-                    <div class="cal-day-label">Qua · Jun</div>
-                    <div class="cal-session"><span class="cal-session-time">09:00</span>Keynote: John Maxwell —
-                        Liderança de Alto Impacto</div>
-                    <div class="cal-session"><span class="cal-session-time">11:30</span>Diversidade & Performance</div>
-                    <div class="cal-session"><span class="cal-session-time">15:00</span>Roundtable: RH Brasil vs Mundo
-                    </div>
-                    <div class="cal-session"><span class="cal-session-time">18:30</span>Networking Dinner</div>
-                </div>
-
-                <div class="cal-day reveal" onclick="selectDay(this)">
-                    <div class="cal-day-top-bar"></div>
-                    <div class="cal-day-tag">Encerramento</div>
-                    <div class="cal-day-num">19</div>
-                    <div class="cal-day-label">Qui · Jun</div>
-                    <div class="cal-session"><span class="cal-session-time">09:00</span>Keynote: Christina Aguilera —
-                        Autenticidade</div>
-                    <div class="cal-session"><span class="cal-session-time">11:00</span>Futuro do RH: Encerramento</div>
-                    <div class="cal-session"><span class="cal-session-time">14:00</span>Cerimônia de Encerramento SHRM26
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ══════════════════════════════
-     GALERIA
-══════════════════════════════ -->
-    <section id="galeria">
-        <div class="section-inner">
-            <div class="section-kicker">Momentos do Evento</div>
-            <h2 class="section-title">Galeria de Fotos</h2>
-            <p class="section-desc">Registros em tempo real do SHRM 2026. Curta, comente e compartilhe!</p>
-
-            <div class="fb-warn" id="fbWarn">
-                <strong>⚠️ Firebase: atualize as regras do Firestore para ativar a galeria e enquetes.</strong>
-                No Firebase Console → Firestore → Regras → substitua por <code>allow read, write: if true;</code>
-            </div>
-
-            <div class="upload-area" id="uploadArea" onclick="document.getElementById('photoInput').click()">
-                <input type="file" id="photoInput" multiple accept="image/*" onchange="handleUpload(this.files)">
-                <div class="upload-icon">📸</div>
-                <strong>Adicionar fotos do evento</strong>
-                <p>Clique para selecionar · Tamanho máximo: 700 KB por foto</p>
-                <div class="upload-progress" id="uploadProgress">
-                    <div class="upload-progress-fill" id="uploadFill"></div>
-                </div>
-            </div>
-
-            <div class="gallery-grid" id="galleryGrid">
-                <div class="gallery-empty" id="galleryEmpty">
-                    <span class="gallery-empty-icon">🖼️</span>
-                    <p>As fotos do evento aparecerão aqui em tempo real.<br>Seja o primeiro a compartilhar um momento!
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ══════════════════════════════
-     ENQUETES
-══════════════════════════════ -->
-    <section id="enquetes">
-        <div class="section-inner">
-            <div class="section-kicker">Interaja com a Comunidade</div>
-            <h2 class="section-title">Enquetes SHRM 2026</h2>
-            <p class="section-desc">Compartilhe sua visão sobre os grandes temas que estão transformando RH e o futuro
-                do trabalho.</p>
-            <div class="polls-grid" id="pollsGrid">
-                <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--gray-400)">
-                    Carregando enquetes…
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ══════════════════════════════
-     SOBRE LILIAN
-══════════════════════════════ -->
-    <section id="sobre">
-        <div class="section-inner">
-            <div class="sobre-grid">
-                <div class="sobre-img-wrap reveal">
-                    <img class="sobre-img"
-                        src="https://crivohub.com.br/wp-content/uploads/2025/10/6-Mistakes-in-Business-45.png"
-                        alt="Lilian Lacanna">
-                    <div class="sobre-img-deco"></div>
-                </div>
-                <div class="reveal">
-                    <div class="section-kicker">Sobre</div>
-                    <h2 class="section-title" style="margin-bottom:24px">Lilian Lacanna</h2>
-                    <div class="sobre-quote">
-                        "O desenvolvimento de pessoas é o investimento com o maior ROI que uma empresa pode fazer."
-                    </div>
-                    <p class="sobre-text">CEO da Crivo Hub, Lilian Lacanna é referência em desenvolvimento corporativo e
-                        aprendizagem organizacional. Há mais de 17 anos conectando empresas a soluções personalizadas de
-                        treinamento e desenvolvimento de times de alta performance.</p>
-                    <p class="sobre-text">Em 2026, representa o Brasil no SHRM Annual Conference — o maior evento de RH
-                        do mundo — levando a perspectiva brasileira de liderança para a conversa global.</p>
-                    <div class="stats-row">
-                        <div class="stat">
-                            <div class="stat-num">17+</div>
-                            <div class="stat-lbl">Anos de Experiência</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-num">500+</div>
-                            <div class="stat-lbl">Projetos Entregues</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-num">50+</div>
-                            <div class="stat-lbl">Consultores na Rede</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══════════════════════════════
-     FOOTER
-══════════════════════════════ -->
-    <footer>
-        <img src="https://crivohub.com.br/wp-content/uploads/2025/06/cropped-Grupo-2.png" alt="Crivo Hub">
-        <p>#SHRM26 · Orlando, Florida · Junho 2026</p>
-        <p style="margin-top:4px">© 2026 Crivo Hub. Todos os direitos reservados.</p>
-        <div class="footer-links">
-            <a href="https://www.instagram.com/crivohub/" target="_blank">Instagram</a>
-            <a href="https://www.linkedin.com/in/lilian-lacanna/" target="_blank">LinkedIn</a>
-            <a href="https://crivohub.com.br" target="_blank">crivohub.com.br</a>
-        </div>
-    </footer>
-
-    <div class="toast" id="toast"></div>
-
-    <!-- ══════════════════════════════
-     SCRIPTS
-══════════════════════════════ -->
-    <script>
-        /* ─── SPLASH + PARTICLES ─── */
-        (function () {
-            const canvas = document.getElementById('particles-canvas');
-            const ctx = canvas.getContext('2d');
-            let W, H, particles = [], raf;
-
-            function resize() {
-                W = canvas.width = window.innerWidth;
-                H = canvas.height = window.innerHeight;
-            }
-
-            function randomBetween(a, b) { return a + Math.random() * (b - a); }
-
-            function createParticle() {
-                return {
-                    x: randomBetween(0, W),
-                    y: randomBetween(0, H),
-                    r: randomBetween(0.8, 2.8),
-                    vx: randomBetween(-0.3, 0.3),
-                    vy: randomBetween(-0.6, -0.15),
-                    alpha: randomBetween(0.3, 1),
-                    decay: randomBetween(0.003, 0.008),
-                    color: Math.random() > 0.65 ? '#ff9800' : '#ffffff'
-                };
-            }
-
-            function initParticles(count) {
-                particles = [];
-                for (let i = 0; i < count; i++) {
-                    const p = createParticle();
-                    p.alpha = Math.random();
-                    particles.push(p);
-                }
-            }
-
-            function drawFrame() {
-                ctx.clearRect(0, 0, W, H);
-                particles.forEach((p, i) => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.alpha -= p.decay;
-                    if (p.alpha <= 0) particles[i] = createParticle();
-
-                    ctx.save();
-                    ctx.globalAlpha = Math.max(0, p.alpha);
-                    ctx.fillStyle = p.color;
-                    ctx.shadowBlur = p.r * 4;
-                    ctx.shadowColor = p.color;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.restore();
-                });
-                raf = requestAnimationFrame(drawFrame);
-            }
-
-            resize();
-            window.addEventListener('resize', resize);
-            initParticles(160);
-            drawFrame();
-
-            // Start progress bar
-            const bar = document.getElementById('splashBar');
-            setTimeout(() => { bar.style.width = '100%'; }, 100);
-
-            // Hide splash after 2.8s
-            setTimeout(() => {
-                cancelAnimationFrame(raf);
-                document.getElementById('splash').classList.add('hidden');
-            }, 2800);
-        })();
-
-        /* ─── UTILITIES ─── */
-        function showToast(msg, duration = 3200) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            clearTimeout(t._timer);
-            t._timer = setTimeout(() => t.classList.remove('show'), duration);
-        }
-
-        function selectDay(el) {
-            document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        /* ─── SCROLL REVEAL ─── */
-        const revealObs = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-        }, { threshold: 0.08 });
-        document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-        /* ─── POLLS DATA ─── */
-        const POLLS = [
-            {
-                id: 'poll_ai', badge: 'IA & Futuro do Trabalho',
-                q: 'Como a IA vai impactar o RH nos próximos 3 anos?',
-                opts: ['Substituirá funções operacionais', 'Criará novos papéis estratégicos', 'Exigirá requalificação massiva', 'Impacto menor do que esperamos']
-            },
-            {
-                id: 'poll_lider', badge: 'Liderança',
-                q: 'O que mais define um líder de alta performance em 2026?',
-                opts: ['Inteligência emocional', 'Visão estratégica', 'Capacidade de adaptação', 'Desenvolver pessoas']
-            },
-            {
-                id: 'poll_psych', badge: 'Cultura Organizacional',
-                q: 'Segurança psicológica: como sua empresa está?',
-                opts: ['Avançada — é prioridade cultural', 'Em desenvolvimento', 'Ainda inicial', 'Ainda não é pauta']
-            },
-            {
-                id: 'poll_talent', badge: 'Talent Management',
-                q: 'Maior desafio em atração e retenção de talentos hoje?',
-                opts: ['Salários e benefícios', 'Cultura e propósito', 'Flexibilidade (remoto/híbrido)', 'Plano de carreira claro']
-            },
-            {
-                id: 'poll_learn', badge: 'Aprendizagem Corporativa',
-                q: 'Qual formato gera mais resultado em desenvolvimento?',
-                opts: ['Jornadas personalizadas longas', 'Workshops intensivos', 'Microlearning digital', 'Mentorias individuais']
-            },
-            {
-                id: 'poll_shrm26', badge: 'SHRM 2026',
-                q: 'Qual tema do SHRM26 você mais quer acompanhar?',
-                opts: ['IA e automação em RH', 'Diversidade e inclusão', 'Bem-estar e saúde mental', 'Liderança do futuro']
-            }
-        ];
-
-        /* ─── STATE ─── */
-        let db = null, fb = null;
-        let votes = JSON.parse(localStorage.getItem('shrm_votes') || '{}');
-        let likes = JSON.parse(localStorage.getItem('shrm_likes') || '{}');
-
-        /* ─── FIREBASE INIT ─── */
-        window.addEventListener('firebaseReady', async () => {
-            db = window._db;
-            fb = window._fb;
-            try {
-                await initPolls();
-                await listenGallery();
-            } catch (e) {
-                console.warn('Firebase:', e.message);
-                document.getElementById('fbWarn').style.display = 'block';
-                renderPolls({});
-            }
-        });
-        setTimeout(() => { if (!db) renderPolls({}); }, 4000);
-
-        /* ─── POLLS ─── */
-        async function initPolls() {
-            const { collection, doc, setDoc, getDocs, onSnapshot } = fb;
-            // Seed if needed
-            const snap = await getDocs(collection(db, 'polls'));
-            const existing = new Set(snap.docs.map(d => d.id));
-            for (const p of POLLS) {
-                if (!existing.has(p.id)) {
-                    const v = {}; p.opts.forEach((_, i) => v[`o${i}`] = 0);
-                    await setDoc(doc(db, 'polls', p.id), { votes: v, total: 0 });
-                }
-            }
-            onSnapshot(collection(db, 'polls'), snap => {
-                const data = {};
-                snap.forEach(d => { data[d.id] = d.data(); });
-                renderPolls(data);
-            });
-        }
-
-        function renderPolls(data) {
-            const grid = document.getElementById('pollsGrid');
-            grid.innerHTML = '';
-            POLLS.forEach(p => {
-                const pd = data[p.id] || { votes: {}, total: 0 };
-                const total = pd.total || 0;
-                const myVote = votes[p.id] !== undefined;
-                const card = document.createElement('div');
-                card.className = 'poll-card reveal';
-                card.innerHTML = `
-      <div class="poll-badge">${p.badge}</div>
-      <div class="poll-q">${p.q}</div>
-      <div class="poll-opts">
-        ${p.opts.map((o, i) => {
-                    const cnt = (pd.votes && pd.votes[`o${i}`]) || 0;
-                    const pct = total > 0 ? Math.round((cnt / total) * 100) : 0;
-                    const mine = myVote && votes[p.id] === i;
-                    return `<div class="poll-opt${myVote ? ' voted' : ''}${mine ? ' my-vote' : ''}"
-                    onclick="${myVote ? '' : `castVote('${p.id}',${i},this)`}">
-            <div class="poll-fill" style="width:${myVote ? pct : 0}%"></div>
-            <span class="poll-opt-text">${o}</span>
-            ${myVote ? `<span class="poll-opt-pct">${pct}%</span>` : ''}
-          </div>`;
-                }).join('')}
+        <a href="https://chat.whatsapp.com/LiySEIKDZbt9wyioyg8TXa?s=cl&p=i&mlu=1" target="_blank" class="btn-wa" style="display:inline-flex;padding:14px 28px;font-size:15px;border-radius:100px;gap:10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.093.539 4.061 1.485 5.779L0 24l6.438-1.467A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.484-5.19-1.333l-.371-.221-3.823.872.908-3.71-.242-.384A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Quero acompanhar a jornada
+        </a>
       </div>
-      <div class="poll-total">${total} ${total === 1 ? 'voto' : 'votos'}</div>
-    `;
-                grid.appendChild(card);
-                revealObs.observe(card);
-            });
-        }
-
-        async function castVote(pollId, idx, el) {
-            if (!db || votes[pollId] !== undefined) return;
-            votes[pollId] = idx;
-            localStorage.setItem('shrm_votes', JSON.stringify(votes));
-            try {
-                const { doc, updateDoc, increment } = fb;
-                await updateDoc(doc(db, 'polls', pollId), { [`votes.o${idx}`]: increment(1), total: increment(1) });
-                showToast('✅ Voto registrado! Obrigado pela participação.');
-            } catch (e) {
-                showToast('⚠️ Não foi possível salvar. Verifique as regras do Firebase.');
-                delete votes[pollId];
-                localStorage.setItem('shrm_votes', JSON.stringify(votes));
-            }
-        }
-
-        /* ─── GALLERY ─── */
-        async function listenGallery() {
-            const { collection, query, orderBy, onSnapshot } = fb;
-            const q = query(collection(db, 'photos'), orderBy('createdAt', 'desc'));
-            onSnapshot(q, snap => {
-                const photos = [];
-                snap.forEach(d => photos.push({ id: d.id, ...d.data() }));
-                renderGallery(photos);
-            });
-        }
-
-        function renderGallery(photos) {
-            const grid = document.getElementById('galleryGrid');
-            const empty = document.getElementById('galleryEmpty');
-            empty.style.display = photos.length === 0 ? 'block' : 'none';
-
-            // Remove cards not in photos anymore
-            const ids = new Set(photos.map(p => p.id));
-            grid.querySelectorAll('.gallery-card').forEach(c => { if (!ids.has(c.dataset.id)) c.remove(); });
-
-            photos.forEach(photo => {
-                let card = grid.querySelector(`[data-id="${photo.id}"]`);
-                if (!card) {
-                    card = buildCard(photo);
-                    grid.appendChild(card);
-                    revealObs.observe(card);
-                } else {
-                    const lc = card.querySelector('.like-count');
-                    if (lc) lc.textContent = photo.likes || 0;
-                }
-            });
-        }
-
-        function buildCard(photo) {
-            const card = document.createElement('div');
-            card.className = 'gallery-card reveal';
-            card.dataset.id = photo.id;
-            const liked = !!likes[photo.id];
-            card.innerHTML = `
-    <img class="gallery-img" src="${photo.url}" alt="SHRM 2026" loading="lazy">
-    <div class="gallery-actions">
-      <button class="act-btn${liked ? ' liked' : ''}" onclick="toggleLike('${photo.id}',this)">
-        <span class="ico">${liked ? '❤️' : '🤍'}</span>
-        <span class="like-count">${photo.likes || 0}</span>
-      </button>
-      <button class="act-btn" onclick="toggleComments('${photo.id}')">
-        <span class="ico">💬</span>
-        <span>${photo.commentCount || 0}</span>
-      </button>
-      <button class="ig-btn" onclick="shareIG('${photo.id}')">📤 Instagram</button>
-    </div>
-    <div class="comments-panel" id="cp_${photo.id}">
-      <div class="comments-list" id="cl_${photo.id}"></div>
-      <div class="cmt-form">
-        <input class="cmt-input" id="ci_${photo.id}" placeholder="Escreva um comentário…" maxlength="200">
-        <button class="cmt-send" onclick="postComment('${photo.id}')">Enviar</button>
+      <div class="cap-form-card reveal">
+        <div class="cap-form-title">Fique por dentro</div>
+        <div class="cap-form-sub">Deixe seu nome e e-mail para receber os insights diretamente na sua caixa de entrada.</div>
+        <input class="cap-field" type="text" id="capNome" placeholder="Seu nome">
+        <input class="cap-field" type="email" id="capEmail" placeholder="Seu melhor e-mail">
+        <button class="btn-cap" onclick="submitLead()">Quero acompanhar a jornada →</button>
+        <div class="cap-privacy">Sem spam. Só o que realmente merece atenção.</div>
       </div>
     </div>
-  `;
-            return card;
-        }
+  </div>
+</section>
 
-        /* Upload: resize + base64 → Firestore */
-        async function handleUpload(files) {
-            if (!files.length) return;
-            if (!db) { showToast('⚠️ Firebase não conectado.'); return; }
+<!-- FOOTER -->
+<footer>
+  <img src="https://crivohub.com.br/wp-content/uploads/2025/06/cropped-Grupo-2.png" alt="Crivo Hub">
+  <div class="footer-main">Da mesa da SHRM para a sua organização</div>
+  <p class="footer-sub">Curadoria e reflexões de Lilian Lacanna e CRIVO sobre liderança, aprendizagem e futuro do trabalho.</p>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/crivohub/" target="_blank">Instagram</a>
+    <a href="https://www.linkedin.com/in/lilian-lacanna/" target="_blank">LinkedIn</a>
+    <a href="https://crivohub.com.br" target="_blank">crivohub.com.br</a>
+    <a href="https://chat.whatsapp.com/LiySEIKDZbt9wyioyg8TXa?s=cl&p=i&mlu=1" target="_blank">Grupo WhatsApp</a>
+  </div>
+  <div class="footer-copy">© 2026 Crivo Hub. Todos os direitos reservados.</div>
+</footer>
 
-            const prog = document.getElementById('uploadProgress');
-            const fill = document.getElementById('uploadFill');
-            prog.style.display = 'block';
-            fill.style.width = '0%';
+<div class="toast" id="toast"></div>
 
-            const MAX_SIZE = 700 * 1024; // 700 KB
-            const { collection, addDoc } = fb;
+<script>
+/* SPLASH */
+(function(){
+  const canvas=document.getElementById('pcanvas'),ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function rnd(a,b){return a+Math.random()*(b-a)}
+  function mk(){return{x:rnd(0,W),y:rnd(0,H),r:rnd(.8,2.6),vx:rnd(-.3,.3),vy:rnd(-.6,-.12),a:Math.random(),d:rnd(.003,.008),c:Math.random()>.65?'#ff9800':'#ffffff'}}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach((p,i)=>{
+      p.x+=p.vx;p.y+=p.vy;p.a-=p.d;
+      if(p.a<=0)pts[i]=mk();
+      ctx.save();ctx.globalAlpha=Math.max(0,p.a);ctx.fillStyle=p.c;
+      ctx.shadowBlur=p.r*4;ctx.shadowColor=p.c;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<160;i++){const p=mk();p.a=Math.random();pts.push(p)}
+  draw();
+  setTimeout(()=>{document.getElementById('sbarFill').style.width='100%'},100);
+  setTimeout(()=>{document.getElementById('splash').classList.add('hidden')},2800);
+})();
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                fill.style.width = `${Math.round(((i) / files.length) * 80)}%`;
+/* UTILS */
+function showToast(msg,d=3200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),d)}
+function selDay(el){document.querySelectorAll('.cday').forEach(d=>d.classList.remove('active'));el.classList.add('active')}
 
-                try {
-                    const base64 = await resizeAndEncode(file, MAX_SIZE);
-                    await addDoc(collection(db, 'photos'), {
-                        url: base64,
-                        likes: 0,
-                        commentCount: 0,
-                        createdAt: new Date().toISOString()
-                    });
-                    showToast(`✅ Foto ${i + 1}/${files.length} enviada!`);
-                } catch (e) {
-                    showToast(`❌ Erro na foto "${file.name}": ${e.message}`);
-                }
-            }
+/* REVEAL */
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
-            fill.style.width = '100%';
-            setTimeout(() => { prog.style.display = 'none'; fill.style.width = '0%'; }, 1200);
-            document.getElementById('photoInput').value = '';
-        }
+/* POLLS */
+const POLLS=[
+  {id:'poll_ai',badge:'IA & Futuro do Trabalho',q:'Como a IA vai impactar o RH nos próximos 3 anos?',opts:['Substituirá funções operacionais','Criará novos papéis estratégicos','Exigirá requalificação massiva','Impacto menor do que esperamos']},
+  {id:'poll_lider',badge:'Liderança',q:'O que mais define um líder de alta performance em 2026?',opts:['Inteligência emocional','Visão estratégica','Capacidade de adaptação','Desenvolver pessoas']},
+  {id:'poll_psych',badge:'Cultura Organizacional',q:'Segurança psicológica: como sua empresa está?',opts:['Avançada — é prioridade cultural','Em desenvolvimento','Ainda inicial','Ainda não é pauta']},
+  {id:'poll_talent',badge:'Talent Management',q:'Maior desafio em atração e retenção de talentos hoje?',opts:['Salários e benefícios','Cultura e propósito','Flexibilidade (remoto/híbrido)','Plano de carreira claro']},
+  {id:'poll_learn',badge:'Aprendizagem Corporativa',q:'Qual formato gera mais resultado em desenvolvimento?',opts:['Jornadas personalizadas longas','Workshops intensivos','Microlearning digital','Mentorias individuais']},
+  {id:'poll_shrm26',badge:'SHRM 2026',q:'Qual tema do SHRM26 você mais quer que eu investigue?',opts:['IA e automação em RH','Diversidade e inclusão','Bem-estar e saúde mental','Liderança do futuro']}
+];
 
-        function resizeAndEncode(file, maxBytes) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                const url = URL.createObjectURL(file);
-                img.onload = () => {
-                    URL.revokeObjectURL(url);
-                    let { width: w, height: h } = img;
-                    // Resize so file is likely under maxBytes
-                    const scale = Math.min(1, Math.sqrt(maxBytes / file.size));
-                    w = Math.round(w * scale);
-                    h = Math.round(h * scale);
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    // Compress iteratively
-                    let quality = 0.85;
-                    let data;
-                    do {
-                        data = canvas.toDataURL('image/jpeg', quality);
-                        quality -= 0.1;
-                    } while (data.length * 0.75 > maxBytes && quality > 0.2);
-                    resolve(data);
-                };
-                img.onerror = () => reject(new Error('Não foi possível ler a imagem'));
-                img.src = url;
-            });
-        }
+let db=null,fb=null;
+let votes=JSON.parse(localStorage.getItem('shrm_votes')||'{}');
+let likes=JSON.parse(localStorage.getItem('shrm_likes')||'{}');
 
-        async function toggleLike(photoId, btn) {
-            if (!db) return;
-            const { doc, updateDoc, increment } = fb;
-            if (likes[photoId]) {
-                delete likes[photoId];
-                btn.classList.remove('liked');
-                btn.querySelector('.ico').textContent = '🤍';
-                await updateDoc(doc(db, 'photos', photoId), { likes: increment(-1) }).catch(() => { });
-            } else {
-                likes[photoId] = true;
-                btn.classList.add('liked');
-                btn.querySelector('.ico').textContent = '❤️';
-                await updateDoc(doc(db, 'photos', photoId), { likes: increment(1) }).catch(() => { });
-                showToast('❤️ Curtida registrada!');
-            }
-            localStorage.setItem('shrm_likes', JSON.stringify(likes));
-        }
+window.addEventListener('firebaseReady',async()=>{
+  db=window._db;fb=window._fb;
+  try{await initPolls();await listenGallery();}
+  catch(e){console.warn('Firebase:',e.message);document.getElementById('fbWarn').style.display='block';renderPolls({});}
+});
+setTimeout(()=>{if(!db)renderPolls({})},4000);
 
-        async function toggleComments(photoId) {
-            const panel = document.getElementById(`cp_${photoId}`);
-            const open = panel.style.display !== 'none' && panel.style.display !== '';
-            panel.style.display = open ? 'none' : 'block';
-            if (!open) loadComments(photoId);
-        }
+async function initPolls(){
+  const{collection,doc,setDoc,getDocs,onSnapshot}=fb;
+  const snap=await getDocs(collection(db,'polls'));
+  const ex=new Set(snap.docs.map(d=>d.id));
+  for(const p of POLLS){
+    if(!ex.has(p.id)){const v={};p.opts.forEach((_,i)=>v[`o${i}`]=0);await setDoc(doc(db,'polls',p.id),{votes:v,total:0});}
+  }
+  onSnapshot(collection(db,'polls'),snap=>{const data={};snap.forEach(d=>{data[d.id]=d.data()});renderPolls(data)});
+}
 
-        async function loadComments(photoId) {
-            if (!db) return;
-            const { collection, getDocs, query, orderBy } = fb;
-            const list = document.getElementById(`cl_${photoId}`);
-            list.innerHTML = '<p style="color:var(--gray-400);font-size:12px;padding:8px 0">Carregando…</p>';
-            try {
-                const q = query(collection(db, `photos/${photoId}/comments`), orderBy('createdAt', 'asc'));
-                const snap = await getDocs(q);
-                if (snap.empty) { list.innerHTML = '<p style="color:var(--gray-400);font-size:12px;padding:8px 0">Seja o primeiro a comentar!</p>'; return; }
-                list.innerHTML = '';
-                snap.forEach(d => {
-                    const item = document.createElement('div');
-                    item.className = 'cmt-item';
-                    item.innerHTML = `<span class="cmt-author">Visitante</span> ${d.data().text}`;
-                    list.appendChild(item);
-                });
-            } catch {
-                list.innerHTML = '<p style="color:var(--gray-400);font-size:12px;padding:8px 0">Não foi possível carregar.</p>';
-            }
-        }
+function renderPolls(data){
+  const grid=document.getElementById('pollsGrid');grid.innerHTML='';
+  POLLS.forEach(p=>{
+    const pd=data[p.id]||{votes:{},total:0};const total=pd.total||0;const mv=votes[p.id]!==undefined;
+    const card=document.createElement('div');card.className='pcard2 reveal';
+    card.innerHTML=`<div class="pbadge">${p.badge}</div><div class="pq">${p.q}</div><div class="popts">
+      ${p.opts.map((o,i)=>{const cnt=(pd.votes&&pd.votes[`o${i}`])||0;const pct=total>0?Math.round((cnt/total)*100):0;const mine=mv&&votes[p.id]===i;
+        return`<div class="popt${mv?' voted':''}${mine?' myvote':''}" onclick="${mv?'':` castVote('${p.id}',${i},this)`}">
+          <div class="pfill" style="width:${mv?pct:0}%"></div>
+          <span class="popt-t">${o}</span>${mv?`<span class="popt-p">${pct}%</span>`:''}
+        </div>`;}).join('')}
+    </div><div class="ptotal">${total} ${total===1?'voto':'votos'}</div>`;
+    grid.appendChild(card);ro.observe(card);
+  });
+}
 
-        async function postComment(photoId) {
-            const input = document.getElementById(`ci_${photoId}`);
-            const text = input.value.trim();
-            if (!text || !db) return;
-            try {
-                const { collection, addDoc, doc, updateDoc, increment } = fb;
-                await addDoc(collection(db, `photos/${photoId}/comments`), { text, createdAt: new Date().toISOString() });
-                await updateDoc(doc(db, 'photos', photoId), { commentCount: increment(1) });
-                input.value = '';
-                loadComments(photoId);
-                showToast('💬 Comentário enviado!');
-            } catch {
-                showToast('❌ Não foi possível comentar. Verifique as regras.');
-            }
-        }
+async function castVote(pollId,idx){
+  if(!db||votes[pollId]!==undefined)return;
+  votes[pollId]=idx;localStorage.setItem('shrm_votes',JSON.stringify(votes));
+  try{const{doc,updateDoc,increment}=fb;await updateDoc(doc(db,'polls',pollId),{[`votes.o${idx}`]:increment(1),total:increment(1)});showToast('✅ Voto registrado! Obrigado.');}
+  catch(e){showToast('⚠️ Não foi possível salvar. Verifique as regras do Firebase.');delete votes[pollId];localStorage.setItem('shrm_votes',JSON.stringify(votes));}
+}
 
-        function shareIG(photoId) {
-            const caption = encodeURIComponent('Acompanhando a @crivohub no SHRM 2026 em Orlando! 🌎✨\n#SHRM26 #CrivoHub #RH #FuturoDoTrabalho #Liderança');
-            if (navigator.share) {
-                navigator.share({ title: 'SHRM 2026 · Crivo Hub', text: decodeURIComponent(caption), url: window.location.href })
-                    .then(() => showToast('✅ Compartilhado!'))
-                    .catch(() => { });
-            } else {
-                navigator.clipboard.writeText(decodeURIComponent(caption) + '\n\n' + window.location.href)
-                    .then(() => showToast('📋 Legenda e link copiados! Cole no seu Instagram.'))
-                    .catch(() => window.open('https://www.instagram.com/', '_blank'));
-            }
-        }
+/* GALLERY */
+async function listenGallery(){
+  const{collection,query,orderBy,onSnapshot}=fb;
+  const q=query(collection(db,'photos'),orderBy('createdAt','desc'));
+  onSnapshot(q,snap=>{const photos=[];snap.forEach(d=>photos.push({id:d.id,...d.data()}));renderGallery(photos)});
+}
 
-        /* ─── DRAG & DROP ─── */
-        const ua = document.getElementById('uploadArea');
-        ua.addEventListener('dragover', e => { e.preventDefault(); ua.style.borderColor = 'var(--orange)'; });
-        ua.addEventListener('dragleave', () => { ua.style.borderColor = ''; });
-        ua.addEventListener('drop', e => { e.preventDefault(); ua.style.borderColor = ''; handleUpload(e.dataTransfer.files); });
-    </script>
+function renderGallery(photos){
+  const grid=document.getElementById('galGrid'),empty=document.getElementById('galEmpty');
+  empty.style.display=photos.length===0?'block':'none';
+  const ids=new Set(photos.map(p=>p.id));
+  grid.querySelectorAll('.gcard').forEach(c=>{if(!ids.has(c.dataset.id))c.remove()});
+  photos.forEach(photo=>{
+    let card=grid.querySelector(`[data-id="${photo.id}"]`);
+    if(!card){card=buildCard(photo);grid.appendChild(card);ro.observe(card);}
+    else{const lc=card.querySelector('.lcount');if(lc)lc.textContent=photo.likes||0;}
+  });
+}
+
+function buildCard(photo){
+  const card=document.createElement('div');card.className='gcard reveal';card.dataset.id=photo.id;
+  const liked=!!likes[photo.id];
+  card.innerHTML=`<img class="gimg" src="${photo.url}" alt="SHRM 2026" loading="lazy">
+    <div class="gactions">
+      <button class="abt${liked?' liked':''}" onclick="toggleLike('${photo.id}',this)">
+        <span class="ico">${liked?'❤️':'🤍'}</span><span class="lcount">${photo.likes||0}</span>
+      </button>
+      <button class="abt" onclick="toggleCmt('${photo.id}')">
+        <span class="ico">💬</span><span>${photo.commentCount||0}</span>
+      </button>
+      <button class="ig-btn" onclick="shareIG()">📤 Instagram</button>
+    </div>
+    <div class="cpanel" id="cp_${photo.id}">
+      <div class="clist" id="cl_${photo.id}"></div>
+      <div class="cform">
+        <input class="cinput" id="ci_${photo.id}" placeholder="Escreva um comentário…" maxlength="200">
+        <button class="csend" onclick="postCmt('${photo.id}')">Enviar</button>
+      </div>
+    </div>`;
+  return card;
+}
+
+async function handleUpload(files){
+  if(!files.length)return;if(!db){showToast('⚠️ Firebase não conectado.');return;}
+  const prog=document.getElementById('upProg'),fill=document.getElementById('upFill');
+  prog.style.display='block';fill.style.width='0%';
+  const{collection,addDoc}=fb;
+  for(let i=0;i<files.length;i++){
+    fill.style.width=`${Math.round((i/files.length)*80)}%`;
+    try{
+      const b64=await resizeEncode(files[i],700*1024);
+      await addDoc(collection(db,'photos'),{url:b64,likes:0,commentCount:0,createdAt:new Date().toISOString()});
+      showToast(`✅ Foto ${i+1}/${files.length} enviada!`);
+    }catch(e){showToast(`❌ Erro: ${e.message}`);}
+  }
+  fill.style.width='100%';setTimeout(()=>{prog.style.display='none';fill.style.width='0%'},1200);
+  document.getElementById('photoInput').value='';
+}
+
+function resizeEncode(file,maxBytes){
+  return new Promise((res,rej)=>{
+    const img=new Image(),url=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(url);
+      let{width:w,height:h}=img;const scale=Math.min(1,Math.sqrt(maxBytes/file.size));
+      w=Math.round(w*scale);h=Math.round(h*scale);
+      const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      let q=.85,data;
+      do{data=cv.toDataURL('image/jpeg',q);q-=.1;}while(data.length*.75>maxBytes&&q>.2);
+      res(data);
+    };
+    img.onerror=()=>rej(new Error('Não foi possível ler a imagem'));img.src=url;
+  });
+}
+
+async function toggleLike(photoId,btn){
+  if(!db)return;const{doc,updateDoc,increment}=fb;
+  if(likes[photoId]){delete likes[photoId];btn.classList.remove('liked');btn.querySelector('.ico').textContent='🤍';await updateDoc(doc(db,'photos',photoId),{likes:increment(-1)}).catch(()=>{});}
+  else{likes[photoId]=true;btn.classList.add('liked');btn.querySelector('.ico').textContent='❤️';await updateDoc(doc(db,'photos',photoId),{likes:increment(1)}).catch(()=>{});showToast('❤️ Curtida registrada!');}
+  localStorage.setItem('shrm_likes',JSON.stringify(likes));
+}
+
+async function toggleCmt(photoId){
+  const p=document.getElementById(`cp_${photoId}`);const open=p.style.display==='block';
+  p.style.display=open?'none':'block';if(!open)loadCmts(photoId);
+}
+
+async function loadCmts(photoId){
+  if(!db)return;const{collection,getDocs,query,orderBy}=fb;
+  const list=document.getElementById(`cl_${photoId}`);list.innerHTML='<p style="color:var(--gray-400);font-size:12px;padding:8px 0">Carregando…</p>';
+  try{
+    const q=query(collection(db,`photos/${photoId}/comments`),orderBy('createdAt','asc'));
+    const snap=await getDocs(q);
+    if(snap.empty){list.innerHTML='<p style="color:var(--gray-400);font-size:12px;padding:8px 0">Seja o primeiro a comentar!</p>';return;}
+    list.innerHTML='';
+    snap.forEach(d=>{const item=document.createElement('div');item.className='citem';item.innerHTML=`<span class="cauthor">Visitante</span> ${d.data().text}`;list.appendChild(item);});
+  }catch{list.innerHTML='<p style="color:var(--gray-400);font-size:12px;padding:8px 0">Não foi possível carregar.</p>';}
+}
+
+async function postCmt(photoId){
+  const input=document.getElementById(`ci_${photoId}`);const text=input.value.trim();if(!text||!db)return;
+  try{
+    const{collection,addDoc,doc,updateDoc,increment}=fb;
+    await addDoc(collection(db,`photos/${photoId}/comments`),{text,createdAt:new Date().toISOString()});
+    await updateDoc(doc(db,'photos',photoId),{commentCount:increment(1)});
+    input.value='';loadCmts(photoId);showToast('💬 Comentário enviado!');
+  }catch{showToast('❌ Não foi possível comentar.');}
+}
+
+function shareIG(){
+  const caption='Acompanhando a @crivohub na SHRM 2026 em Orlando! 🌎✨\n#SHRM26 #CrivoHub #RH #FuturoDoTrabalho #Liderança';
+  if(navigator.share){navigator.share({title:'SHRM 2026 · Crivo Hub',text:caption,url:window.location.href}).then(()=>showToast('✅ Compartilhado!')).catch(()=>{});}
+  else{navigator.clipboard.writeText(caption+'\n\n'+window.location.href).then(()=>showToast('📋 Legenda copiada! Cole no seu Instagram.')).catch(()=>window.open('https://www.instagram.com/','_blank'));}
+}
+
+/* LEAD CAPTURE */
+async function submitLead(){
+  const nome=document.getElementById('capNome').value.trim();
+  const email=document.getElementById('capEmail').value.trim();
+  if(!nome||!email){showToast('⚠️ Preencha nome e e-mail.');return;}
+  if(!db){window.open('https://chat.whatsapp.com/LiySEIKDZbt9wyioyg8TXa?s=cl&p=i&mlu=1','_blank');return;}
+  try{
+    const{collection,addDoc}=fb;
+    await addDoc(collection(db,'leads'),{nome,email,createdAt:new Date().toISOString()});
+    document.getElementById('capNome').value='';document.getElementById('capEmail').value='';
+    showToast('✅ Inscrição confirmada! Até breve.');
+    setTimeout(()=>window.open('https://chat.whatsapp.com/LiySEIKDZbt9wyioyg8TXa?s=cl&p=i&mlu=1','_blank'),1200);
+  }catch{showToast('⚠️ Erro ao salvar. Tente pelo WhatsApp.');window.open('https://chat.whatsapp.com/LiySEIKDZbt9wyioyg8TXa?s=cl&p=i&mlu=1','_blank');}
+}
+
+/* DRAG DROP */
+const ua=document.getElementById('uploadArea');
+ua.addEventListener('dragover',e=>{e.preventDefault();ua.style.borderColor='var(--orange)'});
+ua.addEventListener('dragleave',()=>{ua.style.borderColor=''});
+ua.addEventListener('drop',e=>{e.preventDefault();ua.style.borderColor='';handleUpload(e.dataTransfer.files)});
+</script>
 </body>
-
 </html>
